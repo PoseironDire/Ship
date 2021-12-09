@@ -159,6 +159,7 @@ MonoBehaviour:
   rotationalDrag: 1
   rotSpeed: 225
   damping: 5
+  thisRigidbody2D: {fileID: 0}
   position: {fileID: 0}
 --- !u!50 &53890059
 Rigidbody2D:
@@ -285,9 +286,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34762a90e5136fa47816e98c5a0c88f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 0, z: -10}
+  offset: {x: 0, y: 4, z: -10}
   movementDamping: 0.15
-  rotationDamping: 5
+  rotationDamping: 3
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

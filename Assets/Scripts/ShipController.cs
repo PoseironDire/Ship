@@ -8,8 +8,7 @@ public class ShipController : MonoBehaviour
     public float rotSpeed = 250;
     [Range(1, 20)] public float damping;
 
-    private Rigidbody2D rb2D;
-
+    [HideInInspector] public Rigidbody2D thisRigidbody2D;
     [HideInInspector] public Transform position;
 
     float horizontalInput;
@@ -17,13 +16,13 @@ public class ShipController : MonoBehaviour
 
     void Start()
     {
-        rb2D = GetComponent<Rigidbody2D>();
+        thisRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb2D.drag = drag;
+        thisRigidbody2D.drag = drag;
 
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
@@ -32,12 +31,12 @@ public class ShipController : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 horizontal = transform.up * (verticalInput * maxSpeed);
-        rb2D.AddForce(horizontal);
+        thisRigidbody2D.AddForce(horizontal);
 
         Vector2 vertical = transform.right * (horizontalInput * maxSpeed);
-        rb2D.AddForce(vertical);
+        thisRigidbody2D.AddForce(vertical);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetMouseButton(1))
         {
             Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             difference.Normalize();
