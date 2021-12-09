@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    Camera thisCamera;
     Vector3 playerPosition;
     Transform player;
     public Vector3 offset;
@@ -13,6 +14,7 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
+        thisCamera = gameObject.GetComponent<Camera>();
         playerPosition = FindObjectOfType<ShipController>().transform.position;
         player = FindObjectOfType<ShipController>().transform;
     }
@@ -24,10 +26,11 @@ public class CameraMovement : MonoBehaviour
         Vector3 destination = new Vector3(playerPosition.x + offset.x, playerPosition.y + offset.y, offset.z) + delta;
         transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, movementDamping);
 
-        // Vector3 difference = Camera.main.ScreenToWorldPoint(playerPosition) - transform.position;
-        // difference.Normalize();
-        // float rotation_z = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        // var desiredRotQ = player.transform.rotation;
-        // transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotQ, Time.deltaTime * rotationDamping);
+        Vector3 difference = Camera.main.ScreenToWorldPoint(playerPosition) - transform.position;
+        difference.Normalize();
+        float rotation_z = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        var desiredRotQ = player.transform.rotation;
+        transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotQ, Time.deltaTime * rotationDamping);
+
     }
 }
