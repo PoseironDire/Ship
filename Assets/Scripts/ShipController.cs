@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    public float maxSpeed;
+    public float maxSpeedY;
+    public float maxSpeedX;
     public float drag;
     public float rotationalDrag;
     public float rotSpeed = 250;
@@ -30,10 +31,10 @@ public class ShipController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 horizontal = transform.up * (verticalInput * maxSpeed);
+        Vector2 horizontal = transform.up * (verticalInput * maxSpeedY);
         thisRigidbody2D.AddForce(horizontal);
 
-        Vector2 vertical = transform.right * (horizontalInput * maxSpeed);
+        Vector2 vertical = transform.right * (horizontalInput * maxSpeedX);
         thisRigidbody2D.AddForce(vertical);
 
         if (Input.GetMouseButton(1))

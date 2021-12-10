@@ -4,33 +4,33 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    Camera thisCamera;
-    Vector3 playerPosition;
-    Transform player;
-    public Vector3 offset;
     private Vector3 velocity = Vector3.zero;
-    public float movementDamping = 0.15f;
-    [Range(1, 20)] public float rotationDamping = 5f;
+    public Vector3 offset;
+    [Range(0, 1)] public float viewSize = 5;
+    [Range(0, 1)] public float movementDamping = 0.15f;
+    [Range(1, 20)] public float rotationDamping = 5;
 
-    void Update()
+    GameObject player;
+    void Start()
     {
-        thisCamera = gameObject.GetComponent<Camera>();
-        playerPosition = FindObjectOfType<ShipController>().transform.position;
-        player = FindObjectOfType<ShipController>().transform;
+
+        player = FindObjectOfType<ShipController>().gameObject;
     }
 
     void FixedUpdate()
     {
-        Vector3 point = GetComponent<Camera>().WorldToViewportPoint(playerPosition);
-        Vector3 delta = playerPosition - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
-        Vector3 destination = new Vector3(playerPosition.x + offset.x, playerPosition.y + offset.y, offset.z) + delta;
+        var distance = player.GetComponent<Rigidbody2D>().velocity.magnitude * 0.1f;
+        Camera.main.orthographicSize = viewSize + distance;
+
+        Vector3 point = GetComponent<Camera>().WorldToViewportPoint(player.transform.position);
+        Vector3 delta = player.transform.position - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
+        Vector3 destination = new Vector3(player.transform.position.x + offset.x, player.transform.position.y + offset.y, offset.z - 10) + delta;
         transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, movementDamping);
 
-        Vector3 difference = Camera.main.ScreenToWorldPoint(playerPosition) - transform.position;
+        Vector3 difference = Camera.main.ScreenToWorldPoint(player.transform.position) - transform.position;
         difference.Normalize();
         float rotation_z = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         var desiredRotQ = player.transform.rotation;
         transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotQ, Time.deltaTime * rotationDamping);
-
     }
 }
